@@ -1,20 +1,32 @@
 <div class="container text-center">
   <div class="row">
-    <div class="col-md-4 offset-md-4">
-      <mat-list>
-        <div mat-subheader>Pregnancy Weeks</div>
-        <mat-list-item
-          *ngFor="let pregnancyWeek of pregnancyWeeks; let i = index"
-        >
-          <div
-            matListItemIcon
-            class="iconit"
-            [innerHTML]="icons[i % icons.length]"
-          ></div>
-          <div matListItemTitle>Week no: {{ pregnancyWeek.weekNo }}</div>
-          <div matListItemLine>Date: {{ pregnancyWeek.date | date }}</div>
-        </mat-list-item>
-      </mat-list>
+    <div class="col-6 offset-3">
+      <div class="card border-{{ color() }} mb-3">
+        <div class="card-header">
+          Baby on the road!
+          <div class="iconit">🐤</div>
+        </div>
+        <div class="card-body text-{{ color() }} p-0">
+          <mat-list>
+            <div mat-subheader>Pregnancy Weeks</div>
+            <mat-list-item
+              [class]="{ highlight: pregnancyWeek.isCurrentWeek }"
+              *ngFor="let pregnancyWeek of pregnancyWeeks; let i = index"
+            >
+              <div
+                matListItemIcon
+                class="iconit"
+                [innerHTML]="icons[i % icons.length]"
+              ></div>
+              <div matListItemTitle>Week no: {{ pregnancyWeek.weekNo }}</div>
+              <div matListItemLine>
+                Date: {{ pregnancyWeek.startDate | date }} -
+                {{ pregnancyWeek.endDate | date }}
+              </div>
+            </mat-list-item>
+          </mat-list>
+        </div>
+      </div>
     </div>
   </div>
 </div>
