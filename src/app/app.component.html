@@ -10,6 +10,7 @@
           <mat-list>
             <div mat-subheader>Pregnancy Weeks</div>
             <mat-list-item
+              id="{{ pregnancyWeek.id }}"
               [class]="{ highlight: pregnancyWeek.isCurrentWeek }"
               *ngFor="let pregnancyWeek of pregnancyWeeks; let i = index"
             >
