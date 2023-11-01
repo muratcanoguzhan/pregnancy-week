@@ -1,5 +1,11 @@
 import { DatePipe, NgFor } from '@angular/common';
-import { AfterViewInit, Component, OnDestroy, signal } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  signal,
+} from '@angular/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -17,12 +23,13 @@ import { RouterOutlet } from '@angular/router';
     MatIconModule,
     MatDividerModule,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnDestroy, AfterViewInit {
   title = 'pregnancy-week';
 
   color = signal('primary');
-  pregnancyWeeks = new Array<PregnancyWeek>();
+  pregnancyWeeks = signal(new Array<PregnancyWeek>());
   icons: string[] = [
     '&#x1F476;',
     '&#x1F423;',
@@ -50,7 +57,7 @@ export class AppComponent implements OnDestroy, AfterViewInit {
     let endDate = this.addDate(startDate, 6, true);
     const today = new Date();
 
-    this.pregnancyWeeks = this.getPregnancyWeeks(startDate, endDate, today);
+    this.pregnancyWeeks.set(this.getPregnancyWeeks(startDate, endDate, today));
 
     this.interval = window.setInterval(() => {
       const index = this.colors.findIndex((c) => c == this.color());
@@ -58,7 +65,7 @@ export class AppComponent implements OnDestroy, AfterViewInit {
     }, 850);
   }
   ngAfterViewInit(): void {
-    const id = this.pregnancyWeeks.find((pw) => pw.isCurrentWeek)?.id!;
+    const id = this.pregnancyWeeks().find((pw) => pw.isCurrentWeek)?.id!;
     const element = document.getElementById(id)!;
     const rect = element.getBoundingClientRect();
 
