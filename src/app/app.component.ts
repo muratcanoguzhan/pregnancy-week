@@ -45,8 +45,11 @@ export class AppComponent implements OnDestroy, AfterViewInit {
   icons: string[] = [
     '&#x1F476;',
     '&#x1F423;',
+    '&#x1F930;',
+    '&#x1F468;&#x200D;&#x1F37C;',
     '&#x1F37C;',
     '&#x1F385;',
+    '&#x1F469;&#x200D;&#x1F37C;',
     '&#x1F383;',
     '&#x1F468;&#x200D;&#x1F469;&#x200D;&#x1F467;',
   ];
