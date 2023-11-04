@@ -62,10 +62,22 @@ export class AppComponent implements OnDestroy, AfterViewInit {
   ];
 
   interval: number;
-  startDate = new Date(2023, 7, 23, 0, 0, 0);
+  private readonly startDateStorageKey = 'startDate';
+
+  startDate = localStorage.getItem(this.startDateStorageKey)
+    ? signal(
+        new Date(Date.parse(localStorage.getItem(this.startDateStorageKey)!))
+      )
+    : signal(
+        new Date(
+          new Date().getFullYear(),
+          new Date().getMonth(),
+          new Date().getDate()
+        )
+      );
   constructor() {
     //let startDate = new Date(2023, 7, 23);//actual date
-    this.reGeneratePregnancyWeeks(this.startDate);
+    this.reGeneratePregnancyWeeks(this.startDate());
 
     this.interval = window.setInterval(() => {
       const index = this.colors.findIndex((c) => c == this.color());
@@ -75,13 +87,7 @@ export class AppComponent implements OnDestroy, AfterViewInit {
   ngAfterViewInit(): void {
     const id = this.pregnancyWeeks().find((pw) => pw.isCurrentWeek)?.id!;
     const element = document.getElementById(id)!;
-    const rect = element.getBoundingClientRect();
-
-    window.scrollTo({
-      top: rect.top,
-      left: rect.left,
-      behavior: 'smooth',
-    });
+    element.focus();
   }
 
   private getPregnancyWeeks(startDate: Date, endDate: Date, today: Date) {
@@ -127,14 +133,18 @@ export class AppComponent implements OnDestroy, AfterViewInit {
   }
 
   reGeneratePregnancyWeeks(startDate: MatDatepickerInputEvent<Date> | Date) {
-    debugger;
     if (startDate instanceof Date) {
-      this.startDate = startDate;
+      this.startDate.set(startDate);
     } else if (startDate instanceof MatDatepickerInputEvent) {
-      this.startDate = startDate.value!;
+      this.startDate.set(startDate.value!);
     }
 
-    const nextDayOfStartDate = new Date(this.startDate.getTime());
+    localStorage.setItem(
+      this.startDateStorageKey,
+      this.startDate().toLocaleDateString()
+    );
+
+    const nextDayOfStartDate = new Date(this.startDate().getTime());
     nextDayOfStartDate.setHours(24);
 
     let endDate = this.addDate(nextDayOfStartDate, 6, true);
