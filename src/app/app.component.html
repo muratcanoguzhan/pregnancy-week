@@ -36,9 +36,9 @@
                 class="iconit"
                 [innerHTML]="icons[i % icons.length]"
               ></div>
-              <div matListItemTitle>Week no: {{ pregnancyWeek.weekNo }}</div>
+              <div matListItemTitle>Week {{ pregnancyWeek.weekNo }}</div>
               <div matListItemLine>
-                Date: {{ pregnancyWeek.startDate | date }} -
+                {{ pregnancyWeek.startDate | date }} -
                 {{ pregnancyWeek.endDate | date }}
               </div>
             </mat-list-item>
